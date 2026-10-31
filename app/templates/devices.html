@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}设备台账{% endblock %}
+{% block content %}
+<div class="page-head row">
+  <div>
+    <h1>设备台账</h1>
+    <p class="muted">共 {{ rows|length }} 台设备 · 支持按园区、状态、关键字筛选</p>
+  </div>
+  <a class="btn primary" href="{{ url_for('main.device_new') }}">＋ 新增设备</a>
+</div>
+
+<form class="filter-bar" method="get">
+  <select name="park">
+    <option value="">全部园区</option>
+    {% for p in parks %}<option value="{{ p }}" {{ 'selected' if f_park == p }}>{{ p }}</option>{% endfor %}
+  </select>
+  <select name="status">
+    <option value="">全部状态</option>
+    {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if f_status == s }}>{{ s }}</option>{% endfor %}
+  </select>
+  <input name="q" value="{{ f_q }}" placeholder="编号 / 名称 / 保管人">
+  <button class="btn" type="submit">筛选</button>
+  <a class="btn ghost" href="{{ url_for('main.devices') }}">重置</a>
+</form>
+
+<div class="card table-card">
+<table>
+  <thead><tr>
+    <th>设备编号</th><th>设备名称</th><th>类别</th><th>园区</th>
+    <th>采购日期</th><th class="r">采购原值</th><th>使用状态</th><th>保管人</th><th>操作</th>
+  </tr></thead>
+  <tbody>
+  {% for d in rows %}
+    <tr>
+      <td class="mono">{{ d['code'] }}</td>
+      <td>{{ d['name'] }}</td>
+      <td>{{ d['category'] }}</td>
+      <td>{{ d['park'] }}</td>
+      <td class="mono">{{ d['purchase_date'] }}</td>
+      <td class="r">¥{{ '{:,.2f}'.format(d['value']) }}</td>
+      <td><span class="tag tag-{{ d['status'] }}">{{ d['status'] }}</span></td>
+      <td>{{ d['keeper'] }}</td>
+      <td class="ops">
+        <a href="{{ url_for('main.device_edit', did=d['id']) }}">编辑</a>
+        <form method="post" action="{{ url_for('main.device_delete', did=d['id']) }}"
+              onsubmit="return confirm('确认删除设备 {{ d['code'] }}？')">
+          <button class="link-danger" type="submit">删除</button>
+        </form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="9" class="empty">没有符合条件的设备</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

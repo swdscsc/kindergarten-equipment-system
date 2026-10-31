@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}管理看板{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>管理看板</h1>
+  <p class="muted">设备资产与维修工作实时汇总 · 数据截至 2026 年 10 月</p>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-num">{{ kpi.total }}</div><div class="kpi-label">设备总数（台）</div></div>
+  <div class="kpi-card"><div class="kpi-num">{{ kpi.in_use_rate }}%</div><div class="kpi-label">在用率</div></div>
+  <div class="kpi-card"><div class="kpi-num warn">{{ kpi.repairing }}</div><div class="kpi-label">维修中（台）</div></div>
+  <div class="kpi-card"><div class="kpi-num">{{ kpi.month_repairs }}</div><div class="kpi-label">本月报修（单）</div></div>
+  <div class="kpi-card"><div class="kpi-num">{{ kpi.done_rate }}%</div><div class="kpi-label">维修完成率</div></div>
+  <div class="kpi-card"><div class="kpi-num accent">¥{{ '{:,.2f}'.format(kpi.cost) }}</div><div class="kpi-label">累计维修费用</div></div>
+</div>
+
+<div class="chart-grid">
+  <div class="card"><h2>各园区设备数量</h2><canvas id="chPark"></canvas></div>
+  <div class="card"><h2>故障类型分布</h2><canvas id="chFault"></canvas></div>
+  <div class="card wide"><h2>月度报修与完成趋势</h2><canvas id="chTrend"></canvas></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const C = { primary:'#15857A', accent:'#FF6A3B', muted:'#6B7280', grid:'#E5E7EB' };
+fetch('/api/stats').then(r => r.json()).then(s => {
+  Chart.defaults.font.family = "'Microsoft YaHei','PingFang SC',sans-serif";
+  new Chart(document.getElementById('chPark'), {
+    type: 'bar',
+    data: { labels: s.parks, datasets: [
+      { label: '设备总数', data: s.parkTotal, backgroundColor: C.primary, borderRadius: 6 },
+      { label: '其中维修中', data: s.parkFixing, backgroundColor: C.accent, borderRadius: 6 }]},
+    options: { responsive: true, maintainAspectRatio: false,
+      scales: { y: { beginAtZero: true, grid: { color: C.grid } } },
+      plugins: { legend: { position: 'bottom' } } }
+  });
+  new Chart(document.getElementById('chFault'), {
+    type: 'doughnut',
+    data: { labels: s.faults.map(f => f.name),
+      datasets: [{ data: s.faults.map(f => f.value),
+        backgroundColor: ['#15857A',' #1E9E90',' #2FA79A',' #10705F','#FF6A3B','#D95423','#7D828A','#0E6B62','#3FB3A5','#A55A33'].map(c => c.trim()) }]},
+    options: { responsive: true, maintainAspectRatio: false, cutout: '55%',
+      plugins: { legend: { position: 'right' } } }
+  });
+  new Chart(document.getElementById('chTrend'), {
+    type: 'line',
+    data: { labels: s.months, datasets: [
+      { label: '报修数量', data: s.reported, borderColor: C.primary, backgroundColor: C.primary,
+        tension: 0, pointRadius: 5, dataLabels: {} },
+      { label: '已完成', data: s.finished, borderColor: C.accent, backgroundColor: C.accent, tension: 0, pointRadius: 5 }]},
+    options: { responsive: true, maintainAspectRatio: false,
+      scales: { y: { beginAtZero: true, grid: { color: C.grid } } },
+      plugins: { legend: { position: 'bottom' } } }
+  });
+});
+</script>
+{% endblock %}

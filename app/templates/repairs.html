@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}维修记录{% endblock %}
+{% block content %}
+<div class="page-head row">
+  <div>
+    <h1>维修记录</h1>
+    <p class="muted">报修 → 派单 → 维修中 → 已完成，全程留痕</p>
+  </div>
+  <a class="btn primary" href="{{ url_for('main.repair_new') }}">＋ 登记报修</a>
+</div>
+
+<form class="filter-bar" method="get">
+  <select name="park">
+    <option value="">全部园区</option>
+    {% for p in parks %}<option value="{{ p }}" {{ 'selected' if f_park == p }}>{{ p }}</option>{% endfor %}
+  </select>
+  <select name="status">
+    <option value="">全部状态</option>
+    {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if f_status == s }}>{{ s }}</option>{% endfor %}
+  </select>
+  <button class="btn" type="submit">筛选</button>
+  <a class="btn ghost" href="{{ url_for('main.repairs') }}">重置</a>
+</form>
+
+<div class="card table-card">
+<table>
+  <thead><tr>
+    <th>报修单号</th><th>设备</th><th>园区</th><th>故障类型</th>
+    <th>报修日期</th><th>完成日期</th><th>状态</th><th class="r">费用</th><th>更新维修状态</th>
+  </tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td class="mono">{{ r['order_no'] }}</td>
+      <td><span class="mono">{{ r['dcode'] }}</span> {{ r['dname'] }}</td>
+      <td>{{ r['park'] }}</td>
+      <td>{{ r['fault_type'] }}</td>
+      <td class="mono">{{ r['report_date'] }}</td>
+      <td class="mono">{{ r['finish_date'] or '—' }}</td>
+      <td><span class="tag tag-r-{{ r['status'] }}">{{ r['status'] }}</span></td>
+      <td class="r">¥{{ '{:,.2f}'.format(r['cost']) }}</td>
+      <td>
+        <form class="inline-form" method="post" action="{{ url_for('main.repair_update', rid=r['id']) }}">
+          <select name="status">
+            {% for s in statuses %}<option {{ 'selected' if r['status'] == s }}>{{ s }}</option>{% endfor %}
+          </select>
+          <input name="finish_date" value="{{ r['finish_date'] or '' }}" placeholder="完成日期">
+          <input name="cost" value="{{ '%g'|format(r['cost']) }}" class="w-cost" placeholder="费用">
+          <button class="btn small" type="submit">保存</button>
+        </form>
+        <form method="post" action="{{ url_for('main.repair_delete', rid=r['id']) }}"
+              onsubmit="return confirm('确认删除该维修记录？')">
+          <button class="link-danger" type="submit">删除</button>
+        </form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="9" class="empty">没有符合条件的维修记录</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

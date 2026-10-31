@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "chart.js": "^4.6.1",
+    "docx": "^9.15.0",
+    "image-size": "^2.0.4",
+    "pptxgenjs": "^4.0.1"
+  }
+}

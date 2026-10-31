@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# 运行时产物（首次启动自动重建）
+instance/
+server.log
+
+# Node（scripts 生成工具）
+scripts/node_modules/
+
+# 编辑器
+.idea/
+.vscode/

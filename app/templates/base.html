@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}园务设备管理系统{% endblock %} · 幼儿园集团</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='chart.umd.js') }}"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="{{ url_for('main.dashboard') }}">
+      <span class="brand-dot"></span>园务设备管理系统
+      <small>幼儿园集团 · 办公自动化</small>
+    </a>
+    <nav>
+      {% for endpoint, label in [('main.dashboard','管理看板'),('main.devices','设备台账'),('main.repairs','维修记录')] %}
+      <a href="{{ url_for(endpoint) }}" class="{{ 'active' if request.endpoint == endpoint }}">{{ label }}</a>
+      {% endfor %}
+      <a href="{{ url_for('main.export') }}" class="btn-export">导出 Excel</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flashes">
+      {% for cat, m in messages %}
+        <div class="flash flash-{{ cat }}">{{ m }}</div>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer">园务设备管理系统 · 演示环境（示例数据） · Flask + SQLite + Chart.js</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

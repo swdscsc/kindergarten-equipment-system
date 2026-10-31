@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}登记报修{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>登记报修</h1>
+  <p class="muted">只填设备编号即可，设备名称与园区由系统自动关联；单号（WX-YYMM-XX）由系统按月自动编号</p>
+</div>
+<div class="card form-card">
+  <form method="post">
+    <div class="form-grid">
+      <label>设备编号 <span class="req">*</span>
+        <input name="device_code" value="{{ f.get('device_code','') }}" placeholder="SB-001" required>
+      </label>
+      <label>故障类型 <span class="req">*</span>
+        <select name="fault_type">
+          {% for t in faults %}<option {{ 'selected' if f.get('fault_type') == t }}>{{ t }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>报修日期 <span class="req">*</span>
+        <input name="report_date" value="{{ f.get('report_date', today) }}" required>
+      </label>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" type="submit">提交报修</button>
+      <a class="btn ghost" href="{{ url_for('main.repairs') }}">取消</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>{{ title }}</h1>
+  <p class="muted">带 <span class="req">*</span> 为必填项；编号一经录入请勿随意变更，维修记录通过编号关联设备</p>
+</div>
+<div class="card form-card">
+  <form method="post">
+    <div class="form-grid">
+      <label>设备编号 <span class="req">*</span>
+        <input name="code" value="{{ d.get('code','') }}" placeholder="SB-033" required>
+      </label>
+      <label>设备名称 <span class="req">*</span>
+        <input name="name" value="{{ d.get('name','') }}" placeholder="教学一体机" required>
+      </label>
+      <label>类别
+        <select name="category">
+          {% for c in categories %}<option {{ 'selected' if d.get('category') == c }}>{{ c }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>园区 <span class="req">*</span>
+        <select name="park">
+          {% for p in parks %}<option {{ 'selected' if d.get('park') == p }}>{{ p }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>采购日期 <span class="req">*</span>
+        <input name="purchase_date" value="{{ d.get('purchase_date','') }}" placeholder="2026-01-01" required>
+      </label>
+      <label>采购原值（元） <span class="req">*</span>
+        <input name="value" value="{{ d.get('value','') }}" placeholder="4200" required>
+      </label>
+      <label>使用状态 <span class="req">*</span>
+        <select name="status">
+          {% for s in statuses %}<option {{ 'selected' if d.get('status','在用') == s }}>{{ s }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>保管人 <span class="req">*</span>
+        <input name="keeper" value="{{ d.get('keeper','') }}" placeholder="张莉" required>
+      </label>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" type="submit">保存</button>
+      <a class="btn ghost" href="{{ url_for('main.devices') }}">取消</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

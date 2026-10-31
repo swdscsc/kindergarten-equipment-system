@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>园务设备管理系统 · 项目展示</title>
+<style>
+  :root { --primary:#15857A; --dark:#0E3F3A; --accent:#FF6A3B; --text:#1F2937; --muted:#6B7280; --line:#E5E7EB; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Microsoft YaHei","PingFang SC",sans-serif; color:var(--text); background:#F6F8F8; line-height:1.7; }
+  header { background:var(--dark); color:#fff; padding:64px 24px 56px; text-align:center; }
+  header h1 { font-size:34px; margin-bottom:10px; }
+  header p { color:#C9E5E1; font-size:16px; }
+  header .tagline { display:inline-block; margin-top:18px; padding:8px 18px; border-radius:999px; background:rgba(255,255,255,.12); font-size:14px; }
+  main { max-width:1000px; margin:0 auto; padding:40px 24px 64px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin:26px 0 40px; }
+  .card { background:#fff; border-radius:12px; padding:22px; box-shadow:0 1px 3px rgba(16,24,32,.06); }
+  .card h2 { font-size:17px; color:var(--primary); margin-bottom:8px; }
+  .card p { color:var(--muted); font-size:14px; }
+  h2.sec { font-size:22px; margin:36px 0 14px; border-left:none; }
+  .shots img { width:100%; border-radius:10px; border:1px solid var(--line); display:block; margin-bottom:10px; }
+  .shots { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; }
+  th,td { padding:10px 14px; border-bottom:1px solid var(--line); font-size:14px; text-align:left; }
+  th { background:var(--primary); color:#fff; }
+  code { background:#EEF2F1; padding:2px 6px; border-radius:5px; font-size:13px; }
+  pre { background:#0E3F3A; color:#D7EEE9; padding:16px 18px; border-radius:10px; overflow-x:auto; font-size:13px; margin:12px 0 22px; }
+  footer { text-align:center; color:#9AA1AA; font-size:13px; padding:20px; }
+  .note { background:#FEF9E7; color:#8A6D1B; border-radius:10px; padding:12px 16px; font-size:13.5px; margin:18px 0 30px; }
+  a.btn { display:inline-block; background:var(--primary); color:#fff; padding:10px 22px; border-radius:8px; text-decoration:none; font-weight:600; margin:4px 8px 0 0; }
+  a.btn.ghost { background:#fff; color:var(--primary); border:1px solid var(--primary); }
+</style>
+</head>
+<body>
+<header>
+  <h1>园务设备管理系统</h1>
+  <p>幼儿园集团办公自动化与数据报表系统 · 项目展示页</p>
+  <span class="tagline">Python Flask · SQLite · Chart.js · openpyxl · pytest 20 用例通过</span>
+</header>
+<main>
+  <div class="note">声明：本项目为个人技术演示作品，全部数据为虚构示例，不代表任何真实幼儿园的实际使用情况。</div>
+
+  <h2 class="sec">这是什么</h2>
+  <p>一个真实可运行的设备管理信息系统：设备台账、维修记录状态流转、实时统计看板、一键导出带公式的 Excel 报表；
+     并以系统数据为源，自动产出 Word 月度报告、PPT 培训课件与《Excel 数据录入规范》，形成"系统 + 制度 + 培训"的完整行政信息管理方案。</p>
+
+  <div class="grid">
+    <div class="card"><h2>管理看板</h2><p>6 项 KPI + 柱状 / 环形 / 折线三类图表，报修、维修、费用实时联动刷新。</p></div>
+    <div class="card"><h2>设备台账</h2><p>32 台设备的三园资产档案，园区 / 状态 / 关键字多维筛选，编号唯一校验。</p></div>
+    <div class="card"><h2>维修记录</h2><p>报修单号按月自动编号（WX-2610-05），待派单 → 维修中 → 已完成状态机，与设备状态双向联动。</p></div>
+    <div class="card"><h2>Excel 报表引擎</h2><p>导出的工作簿含活公式、数据验证与条件格式，经 LibreOffice 重算 204 个公式零错误。</p></div>
+  </div>
+
+  <h2 class="sec">真实运行截图</h2>
+  <div class="shots">
+    <img src="screenshots/01-管理看板.png" alt="管理看板">
+    <img src="screenshots/06-报修成功与状态联动.png" alt="报修成功与状态联动">
+  </div>
+
+  <h2 class="sec">快速运行</h2>
+  <pre>git clone https://github.com/swdscsc/kindergarten-equipment-system.git
+cd kindergarten-equipment-system
+pip install -r requirements.txt
+python run.py          # http://127.0.0.1:5177
+python -m pytest tests/ -v   # 20 passed</pre>
+
+  <h2 class="sec">文档索引</h2>
+  <table>
+    <tr><th>文档</th><th>内容</th></tr>
+    <tr><td><a href="https://github.com/swdscsc/kindergarten-equipment-system#readme">README</a></td><td>功能总览、安装运行、项目结构</td></tr>
+    <tr><td><a href="https://github.com/swdscsc/kindergarten-equipment-system/blob/main/docs/设计文档.md">设计文档</a></td><td>架构、数据模型、状态机、接口设计</td></tr>
+    <tr><td><a href="https://github.com/swdscsc/kindergarten-equipment-system/blob/main/docs/测试报告.md">测试报告</a></td><td>20 个用例、真实运行结果、缺陷修复记录</td></tr>
+    <tr><td><a href="https://github.com/swdscsc/kindergarten-equipment-system/blob/main/docs/项目成果与技术难点.md">成果与难点</a></td><td>五大技术难点与解决过程</td></tr>
+    <tr><td><a href="https://github.com/swdscsc/kindergarten-equipment-system/blob/main/docs/面试问答准备.md">面试问答</a></td><td>13 个高频面试问题与回答要点</td></tr>
+  </table>
+
+  <p style="margin-top:26px">
+    <a class="btn" href="https://github.com/swdscsc/kindergarten-equipment-system">查看源码仓库</a>
+    <a class="btn ghost" href="https://github.com/swdscsc/kindergarten-equipment-system/tree/main/docs">阅读设计文档</a>
+  </p>
+</main>
+<footer>© 2026 swdscsc · MIT License · 演示项目，数据均为虚构示例</footer>
+</body>
+</html>
